@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CRUD</string>
+    <string name="name">Введите имя</string>
+    <string name="year">Введите год рождения</string>
+    <string name="button_save">Сохранить</string>
+    <string name="button_delete">Удалить</string>
+    <string name="button_add">Добавить</string>
 </resources>

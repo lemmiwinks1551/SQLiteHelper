@@ -1,10 +1,13 @@
 package com.example.crud;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
@@ -12,8 +15,7 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 public class MainActivity extends AppCompatActivity {
 
     ListView userList;
-    TextView header;
-    com.example.crud.DatabaseHelper databaseHelper;
+    DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor userCursor;
     SimpleCursorAdapter userAdapter;
@@ -23,12 +25,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Получаем объекты
-        header = findViewById(R.id.header);
+        // Получаем объект и усиаеавоиваем на него слушателя
         userList = findViewById(R.id.list);
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Если на Вьюху userList кликнут - она создаст интент для вызова UserActivity
+                // и передаст в нем id строки, на которой было нажатие
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                intent.putExtra("id", id);
+
+                // Выводим уведомление
+                Toast toast = Toast.makeText(getApplicationContext(), "Выбираем...", Toast.LENGTH_SHORT);
+                toast.show();
+                startActivity(intent);
+            }
+        });
 
         // Создаем экземпляр класса DatabaseHelper
-        databaseHelper = new com.example.crud.DatabaseHelper(getApplicationContext());
+        databaseHelper = new DatabaseHelper(getApplicationContext());
     }
 
     @Override
@@ -63,8 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
-        header.setText("Найдено элементов: " + userCursor.getCount());
+        // Подключаем адаптер к ListView
         userList.setAdapter(userAdapter);
+    }
+
+    public void add(View view) {
+        // При нажатии на кнопку запускается UserActivity, при этом не передается никакого id,
+        // то есть в UserActivity id будет равен нулю, значит будет идти добавление данных:
+        Intent intent = new Intent(this, UserActivity.class);
+        startActivity(intent);
     }
 
     @Override
