@@ -44,8 +44,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Вызывается, когда необходимо обновление схемы базы данных.
         // Здесь можно пересоздать ранее созданную базу данных в onCreate(),
         // установив соответствующие правила преобразования от старой бд к новой
-
+        if (oldVersion == 1) {
+            //Код, выполняемый для версии базы данных 1
+        }
+        if (oldVersion < 3) {
+            //Код, выполняемый для версии базы данных 1 или 2
+        }
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Метод onDowngrade() предназначен для возврата базы данных к предыдущей версии.
     }
 }

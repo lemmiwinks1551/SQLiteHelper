@@ -58,13 +58,21 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void save(View view) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.COLUMN_NAME, nameBox.getText().toString());
-        contentValues.put(DatabaseHelper.COLUMN_YEAR, yearBox.getText().toString());
+        // Для добавления или обновления нам надо создать объект ContentValues.
+        // Данный объект представляет словарь, который содержит набор пар "ключ-значение".
+        // Для добавления в этот словарь нового объекта применяется метод put.
+
+        ContentValues contentValues = new ContentValues(); // Создаем объект для добавления данных
+        contentValues.put(DatabaseHelper.COLUMN_NAME, nameBox.getText().toString()); // Добавляем строку в столбец "Имя"
+        contentValues.put(DatabaseHelper.COLUMN_YEAR, yearBox.getText().toString()); // Добавляем строку в столбец "Год"
 
         if (userId > 0) {
+            // Если запись уже есть в БД (выбрана конкретная строчка id)- обновляем существующую строку в БД
+            // В метод update передаем аргументы (ИмяТаблицы, контент, id строки для обновления = id, агрументы)
             sqLiteDatabase.update(DatabaseHelper.TABLE, contentValues, DatabaseHelper.COLUMN_ID + "=" + userId, null);
         } else {
+            // Если записи в БД не было (никакая строчка не выбрана) - вставляем новую строку
+            // В метод insert передаем аргументы (ИмяТаблицы, null (используется, если контент пуст и нужно вставить пустую строку, контент)
             sqLiteDatabase.insert(DatabaseHelper.TABLE, null, contentValues);
         }
         goHome();

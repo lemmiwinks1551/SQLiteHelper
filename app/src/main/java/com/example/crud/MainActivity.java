@@ -25,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Получаем объект и усиаеавоиваем на него слушателя
-        userList = findViewById(R.id.list);
+        // Получаем объект и устанавливаем на него слушателя
+        userList = findViewById(R.id.list); // Назначаем ListView
         userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Если на Вьюху userList кликнут - она создаст интент для вызова UserActivity
-                // и передаст в нем id строки, на которой было нажатие
+                // и передаст в нем id строки, по которой было нажатие
                 Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 intent.putExtra("id", id);
 
